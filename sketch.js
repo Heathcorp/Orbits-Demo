@@ -1,6 +1,8 @@
 //TODO:
 //Collisions, labels
 
+//github test
+
 var fixedDeltaTime = 0, tempDeltaTime = 0;
 var frameTime = 0;
 
