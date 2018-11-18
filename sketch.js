@@ -1,5 +1,8 @@
 //TODO:
-//Collisions, labels, adding velocity mid-flight if that makes sense
+//labels, 
+//Collisions,
+//adding velocity mid-flight if that makes sense,
+//Fragmentation into smaller objects to simulate Kessler Syndrome
 
 var fixedDeltaTime = 0, tempDeltaTime = 0;
 var frameTime = 0;
