@@ -116,7 +116,6 @@ function predictOrbit(obj) {
     push();
     strokeWeight(4);
     line(mousePressedPos.x, mousePressedPos.y, mousePos.x, mousePos.y);
-    noStroke();
     ellipse(mousePos.x, mousePos.y, 8, 8);
     pop();
 
