@@ -15,9 +15,12 @@ var earthPos = null;
 var earthMass = 512;
 var orbiters = [];
 
+var collisionDrag = 0.9;
+var collisions = false;
+
 var GSlider, massSlider, timeSlider;
 
-var mousePressedPos = null, mouseReleasedPos = null, mousePos = null;
+var mousePressedPos = null, mouseReleasedPos = null, mousePos = null, cCheckBox = null;
 
 function reset() {
 
@@ -29,6 +32,16 @@ function reset() {
     G = GSlider.value();
     earthMass = massSlider.value();
     timeScale = timeSlider.value();
+
+}
+
+function collisionCheckBox() {
+
+    if (this.checked) {
+        collisions = true;
+    } else {
+        collisions = false;
+    }
 
 }
 
@@ -54,6 +67,8 @@ function setup() {
     earthMass = massSlider.value();
     timeScale = timeSlider.value();
 
+    cCheckBox = document.getElementById("collisions")
+
     orbiters = [];
     earthPos = createVector(width/2, height/2);
 
@@ -71,6 +86,7 @@ function draw() {
     G = GSlider.value();
     earthMass = massSlider.value();
     timeScale = timeSlider.value();
+    collisions = cCheckBox.checked;
 
     fixedDeltaTime = ((Date.now()/1000 - frameTime) * timeScale);
     //print(fixedDeltaTime);
@@ -86,6 +102,12 @@ function draw() {
         fill(47, 127);
         rect(earthPos.x, earthPos.y, width/2, height/2);
         pop();
+
+        if (collisions) {
+            for (var i = 0; i < orbiters.length; i++) {
+                orbiters[i].CheckCollisions();
+            }
+        }
         for (var i = 0; i < orbiters.length; i++) {
             orbiters[i].Update();
         }
