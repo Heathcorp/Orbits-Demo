@@ -24,7 +24,15 @@ function Orbiter (initPos, initVel, radius) {
 
         this.pos.add(p5.Vector.mult(this.vel, deltaTime));
 
+        this.CheckCollisions();
+
         //print("updated");
+    }
+
+    this.CheckCollisions = function() {
+
+        
+
     }
 
     this.Draw = function () {
