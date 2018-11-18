@@ -1,5 +1,5 @@
 //TODO:
-//labels, 
+//labels,
 //Collisions,
 //adding velocity mid-flight if that makes sense,
 //Fragmentation into smaller objects to simulate Kessler Syndrome
@@ -113,8 +113,13 @@ function predictOrbit(obj) {
 
     //print(mousePressedPos);
     //print(mousePos);
-
+    push();
+    strokeWeight(4);
     line(mousePressedPos.x, mousePressedPos.y, mousePos.x, mousePos.y);
+    noStroke();
+    ellipse(mousePos.x, mousePos.y, 8, 8);
+    pop();
+
     let iters = Math.round((p5.Vector.dist(mousePressedPos, earthPos) * obj.initVel.mag()) / 16);
 
     for (i = 0; i < iters; i++) {
