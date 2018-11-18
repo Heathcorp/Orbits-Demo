@@ -1,6 +1,6 @@
 //TODO:
 //labels,
-//Collisions,
+//Collisions (WIP),
 //adding velocity mid-flight if that makes sense,
 //Fragmentation into smaller objects to simulate Kessler Syndrome
 
