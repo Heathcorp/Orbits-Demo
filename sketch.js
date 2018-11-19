@@ -58,7 +58,7 @@ function setup() {
     massSlider.position(24, 48);
     timeSlider = createSlider(-40, 32, 6);
     timeSlider.position(24, 72);
-    trailSlider = createSlider(1, 223, 127, 1);
+    trailSlider = createSlider(1, 255, 127, 1);
     trailSlider.position(24, 96);
 
     trail = trailSlider.value();
