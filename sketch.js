@@ -11,37 +11,32 @@ var timeScale = 6;
 
 var G = 32;
 
+var trail = 0;
+
 var earthPos = null;
 var earthMass = 512;
-var orbiters = [];
+var orbiters = [], nextOrbiters = [];
 
-var collisionDrag = 0.9;
+var collisionDrag = 1;
 var collisions = false;
 
-var GSlider, massSlider, timeSlider;
+var GSlider, massSlider, timeSlider, trailSlider;
 
 var mousePressedPos = null, mouseReleasedPos = null, mousePos = null, cCheckBox = null;
 
 function reset() {
 
     orbiters = [];
+    nextOrbiters = [];
 
     GSlider.value(32);
     massSlider.value(512);
     timeSlider.value(6);
+    trailSlider.value(127);
+    trail = trailSlider.value();
     G = GSlider.value();
     earthMass = massSlider.value();
     timeScale = timeSlider.value();
-
-}
-
-function collisionCheckBox() {
-
-    if (this.checked) {
-        collisions = true;
-    } else {
-        collisions = false;
-    }
 
 }
 
@@ -60,19 +55,23 @@ function setup() {
     GSlider = createSlider(0.1, 100, 32);
     GSlider.position(24, 24);
     massSlider = createSlider(0.1, 4096, 512);
-    massSlider.position(24, 44);
+    massSlider.position(24, 48);
     timeSlider = createSlider(-40, 32, 6);
-    timeSlider.position(24, 64);
+    timeSlider.position(24, 72);
+    trailSlider = createSlider(1, 223, 127, 1);
+    trailSlider.position(24, 96);
+
+    trail = trailSlider.value();
     G = GSlider.value();
     earthMass = massSlider.value();
     timeScale = timeSlider.value();
 
-    cCheckBox = document.getElementById("collisions")
+    cCheckBox = document.getElementById("collisions");
 
     orbiters = [];
     earthPos = createVector(width/2, height/2);
 
-    orbiters.push(new Orbiter (createVector (earthPos.x, earthPos.y - 128), createVector (95, 0), 8));
+    //orbiters.push(new Orbiter (createVector (earthPos.x, earthPos.y - 128), createVector (95, 0), 8));
 
     background (47);
 
@@ -81,12 +80,15 @@ function setup() {
 
 function draw() {
 
+    orbiters = nextOrbiters.slice(0);
+
     mousePos = createVector(mouseX*1, mouseY*1);
 
     G = GSlider.value();
     earthMass = massSlider.value();
     timeScale = timeSlider.value();
     collisions = cCheckBox.checked;
+    trail = trailSlider.value();
 
     fixedDeltaTime = ((Date.now()/1000 - frameTime) * timeScale);
     //print(fixedDeltaTime);
@@ -94,29 +96,32 @@ function draw() {
 
     //background (47);
     if (mouseIsPressed && mouseButton === RIGHT) {
-        background(47);
+        //background(47);
 
         predictOrbit(new Orbiter(p5.Vector.mult(mousePressedPos, 1), p5.Vector.sub(mousePos, mousePressedPos), 8));
-    } else {
-        push();
-        fill(47, 127);
-        rect(earthPos.x, earthPos.y, width/2, height/2);
-        pop();
+    }
+    push();
+    fill(47, trail);
+    rect(earthPos.x, earthPos.y, width/2, height/2);
+    pop();
 
-        if (collisions) {
-            for (var i = 0; i < orbiters.length; i++) {
-                orbiters[i].CheckCollisions();
-            }
-        }
+    if (collisions) {
         for (var i = 0; i < orbiters.length; i++) {
-            orbiters[i].Update();
+            orbiters[i].CheckCollisions();
         }
-
-        mousePressedPos = null;
-        mouseReleasedPos = null;
+    }
+    for (var i = 0; i < orbiters.length; i++) {
+        if(orbiters[i].delete == true) {
+            nextOrbiters.splice(nextOrbiters.indexOf(orbiters[i]), 1);
+        }
+        orbiters[i].Update();
     }
 
+
     push();
+    fill(63);
+    ellipse(earthPos.x, earthPos.y, earthMass/6);
+    fill(215);
     ellipse(earthPos.x, earthPos.y, earthMass/8);
     pop();
 
@@ -141,7 +146,7 @@ function predictOrbit(obj) {
     ellipse(mousePos.x, mousePos.y, 8, 8);
     pop();
 
-    let iters = Math.round((p5.Vector.dist(mousePressedPos, earthPos) * obj.initVel.mag()) / 16);
+    let iters = Math.round((p5.Vector.dist(mousePressedPos, earthPos) * obj.initVel.mag()) / (Math.abs(timeScale*2)));
 
     for (i = 0; i < iters; i++) {
         let pos = p5.Vector.mult(obj.pos, 1);
@@ -162,7 +167,7 @@ function mouseReleased() {
     print("mouse released");
     mouseReleasedPos = createVector(mouseX*1, mouseY*1);
     if(mouseButton === RIGHT) {
-        orbiters.push(new Orbiter(p5.Vector.mult(mousePressedPos, 1), p5.Vector.sub(mousePos, mousePressedPos), 8));
+        nextOrbiters.push(new Orbiter(p5.Vector.mult(mousePressedPos, 1), p5.Vector.sub(mousePos, mousePressedPos), 8));
     }
     //return false;
 }
