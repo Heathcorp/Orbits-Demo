@@ -4,13 +4,13 @@ function Orbiter (initPos, initVel, radius) {
 
     this.mass = radius*2;
 
-    this.initPos = initPos;
-    this.initVel = initVel;
+    this.initPos = p5.Vector.mult(initPos, 1);
+    this.initVel = p5.Vector.mult(initVel, 1);
 
-    this.pos = initPos;
-    this.vel = initVel;
+    this.pos = p5.Vector.mult(initPos, 1);
+    this.vel = p5.Vector.mult(initVel, 1);
     this.acc = createVector(0, 0);
-    this.rad = radius;
+    this.rad = radius*1;
 
 
     //orbiters.push(this);
@@ -91,7 +91,7 @@ function Orbiter (initPos, initVel, radius) {
                         //this.Update();
                         //orbiters[i].Update();
 
-                        if(this.rad >= 2 && Math.round(random(this.rad - orbiters[i].rad)) == 0) {
+                        if(this.rad >= 2 && Math.round(random(Math.round((this.rad - orbiters[i].rad) / this.rad))) == 0) {
 
                             this.Fragment();
 
@@ -127,6 +127,12 @@ function Orbiter (initPos, initVel, radius) {
                 orbiters[i].active = false;
             }
         }
+
+    }
+
+    this.Clone = function () {
+
+        return new Orbiter(this.initPos, this.initVel, this.rad);
 
     }
 

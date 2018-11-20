@@ -2,7 +2,6 @@
 //labels,
 //Collisions (WIP),
 //adding velocity mid-flight if that makes sense,
-//Fragmentation into smaller objects to simulate Kessler Syndrome
 
 var fixedDeltaTime = 0, tempDeltaTime = 0;
 var frameTime = 0;
@@ -23,6 +22,8 @@ var collisions = false;
 var GSlider, massSlider, timeSlider, trailSlider;
 
 var mousePressedPos = null, mouseReleasedPos = null, mousePos = null, cCheckBox = null;
+
+var lastOrbit;
 
 function reset() {
 
@@ -167,9 +168,16 @@ function mouseReleased() {
     print("mouse released");
     mouseReleasedPos = createVector(mouseX*1, mouseY*1);
     if(mouseButton === RIGHT) {
-        nextOrbiters.push(new Orbiter(p5.Vector.mult(mousePressedPos, 1), p5.Vector.sub(mousePos, mousePressedPos), 8));
+        lastOrbit = new Orbiter(mousePressedPos, p5.Vector.sub(mousePos, mousePressedPos), 16);
+        nextOrbiters.push(lastOrbit.Clone());
     }
     //return false;
+}
+
+function keyTyped() {
+    if (key === 'r') {
+        nextOrbiters.push(lastOrbit.Clone());
+    }
 }
 
 function windowResized() {
