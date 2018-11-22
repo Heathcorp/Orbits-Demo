@@ -1,7 +1,5 @@
 //TODO:
-//labels,
-//Collisions (WIP),
-//adding velocity mid-flight if that makes sense,
+//adding velocity mid-flight if that makes sense
 
 var fixedDeltaTime = 0, tempDeltaTime = 0;
 var frameTime = 0;
