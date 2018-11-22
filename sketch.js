@@ -26,7 +26,7 @@ var mousePressedPos = null, mouseReleasedPos = null, mousePos = null;
 
 var lastOrbit;
 
-var isOverParams = false, paramDiv = null;
+var isOverDiv = false, divs = [];
 
 function reset() {
 
@@ -34,7 +34,7 @@ function reset() {
     nextOrbiters = [];
 
     GSlider.value = 32;
-    massSlider.value = 512;
+    massSlider.value = 2048;
     timeSlider.value = 16;
     trailSlider.value = 127;
 
@@ -43,6 +43,12 @@ function reset() {
     earthMass = massSlider.value;
     timeScale = timeSlider.value;
 
+}
+
+function closeInfo() {
+    divs[1].parentNode.removeChild(divs[1]);
+    //quick and dirty delete
+    divs.pop();
 }
 
 function setup() {
@@ -57,7 +63,7 @@ function setup() {
 	ellipseMode(RADIUS);
     noStroke();
 
-    paramDiv = document.getElementById("Parameters");
+    divs = [document.getElementById("Parameters"), document.getElementById("Info")];
 
     GSlider = document.getElementById("G");
     massSlider = document.getElementById("Mass");
@@ -95,7 +101,7 @@ function draw() {
 
     //background (47);
     push();
-    fill(47, trail);
+    fill(47, trail*1);
     rect(earthPos.x, earthPos.y, width/2, height/2);
     pop();
 
@@ -126,7 +132,7 @@ function draw() {
         orbiters[i].Draw();
     }
 
-    if (mouseIsPressed && isOverParams == false) {
+    if (mouseIsPressed && isOverDiv == false) {
         //background(47);
 
         predictOrbit();
@@ -167,20 +173,22 @@ function mousePressed() {
     mousePressedPos = createVector(mouseX*1, mouseY*1);
     tempDeltaTime = fixedDeltaTime*1;
 
-    let divDim = [parseInt(paramDiv.style.left,10), parseInt(paramDiv.style.top,10), parseInt(paramDiv.style.width,10), parseInt(paramDiv.style.height,10)];
+    for(let i = 0; i < divs.length; i++) {
+        let divDim = [parseInt(divs[i].style.left,10), parseInt(divs[i].style.top,10), parseInt(divs[i].style.width,10), parseInt(divs[i].style.height,10)];
 
-    if (mousePressedPos.x >= divDim[0] && mousePressedPos.x <= divDim[0] + divDim[2] && mousePressedPos.y >= divDim[1] && mousePressedPos.y <= divDim[1] + divDim[3]) {
-        isOverParams = true;
+        if (mousePressedPos.x >= divDim[0] && mousePressedPos.x <= divDim[0] + divDim[2] && mousePressedPos.y >= divDim[1] && mousePressedPos.y <= divDim[1] + divDim[3]) {
+            isOverDiv = true;
+            break;
+        }
     }
-
     //return false;
 }
 
 function mouseReleased() {
     print("mouse released");
     mouseReleasedPos = createVector(mouseX*1, mouseY*1);
-    if(isOverParams) {
-        isOverParams = false;
+    if(isOverDiv) {
+        isOverDiv = false;
         return false;
     }
     lastOrbit = new Orbiter(mousePressedPos, p5.Vector.sub(mousePos, mousePressedPos).mult(tempDeltaTime), 8);
