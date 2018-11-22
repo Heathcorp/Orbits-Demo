@@ -9,7 +9,12 @@
 <script src="sketch.js"></script>
 <script src="classes.js"></script>
 <body oncontextmenu="return false">
-<button style="position: absolute; left: 24px; top: 124px;" onclick="reset();">Reset</button>
-<div style="position: absolute; left: 24px; top: 152px;"><input type="checkbox" id="collisions"><label style="color:#d7d7d7">Collisions (Wonky)</label></div>
+    <div id="Parameters" style="position: absolute; left: 12px; top: 12px; z-index: 5; color: #d7d7d7; height: 158px; width: 158px;" >
+        <input id="G" type="range" min="0.1" max="100" style="position: relative; left: 12px; top: 12px;">
+        <input id="Mass" type="range" min="0.1" max="8192" style="position: relative; left: 12px; top: 12px;">
+        <input id="Time" type="range" min="-40" max="48" style="position: relative; left: 12px; top: 12px;">
+        <input id="Trail" type="range" min="1" max="255" step="1" style="position: relative; left: 12px; top: 12px;">
+        <button style="position: relative; left: 12px; top: 12px; width: 132px;" onclick="reset();">Reset</button>
+    </div>
 </body>
 </html>
