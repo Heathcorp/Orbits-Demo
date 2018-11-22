@@ -149,7 +149,7 @@ function predictOrbit() {
     line(mousePressedPos.x, mousePressedPos.y, mousePos.x, mousePos.y);
     ellipse(mousePos.x, mousePos.y, 8, 8);
 
-    let iters = Math.round((16/tempDeltaTime) * obj.initVel.magSq());
+    let iters = Math.round((100000/tempDeltaTime) * (obj.initVel.magSq()/(G*earthMass)));
 
     print(iters);
 
@@ -171,10 +171,6 @@ function mousePressed() {
 
     if (mousePressedPos.x >= divDim[0] && mousePressedPos.x <= divDim[0] + divDim[2] && mousePressedPos.y >= divDim[1] && mousePressedPos.y <= divDim[1] + divDim[3]) {
         isOverParams = true;
-    }
-
-    if(isOverParams) {
-        return false;
     }
 
     //return false;
